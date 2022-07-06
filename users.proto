@@ -1,0 +1,51 @@
+syntax = "proto3";
+package user.v1;
+option go_package = "services/pb";
+import "google/api/annotations.proto";
+
+
+// Svc comment
+service Users {
+  // Creates new user
+  rpc Create(User) returns (User) {
+    option (google.api.http) = {
+      post: "/post"
+      body: "*"
+    };
+  }
+  // Operation to recieve new user
+  rpc Get(Id) returns (User) {
+    option (google.api.http) = {
+      get: "/get/{id}"
+    };
+  }
+  // Operation to delete user
+  rpc Remove(Id) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/delete/{id}"
+    };
+  }
+  // Operation update information about user
+  rpc Update(User) returns (User) {
+    option (google.api.http) = {
+      put: "/put"
+      body: "*"
+    };
+  }
+}
+
+message Empty {}
+
+message Id {
+  int32 id = 1;
+}
+
+// Unified entity for user
+message User {
+  // User id that will be set on create operation
+  int32 id = 1;
+  // User name
+  string name = 2;
+  // User age
+  int32 age = 3;
+}

@@ -1,0 +1,10 @@
+version: 1
+packages:
+  - path: "postgres/sqlc"
+    name: "sqlc"
+    engine: "postgresql"
+    schema: "migrations/"
+    queries: "sqlc.sql"
+    emit_interface: true
+    emit_prepared_queries: true
+    sql_package: "pgx/v4"
