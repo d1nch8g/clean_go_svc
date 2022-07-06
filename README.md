@@ -24,7 +24,7 @@ localhost:9080
 
 ## Monitoring
 
-Grafana link: [grafana_modelrepo](nan)
+Grafana link: [grafana_logs](nan)
 
 ## Local start
 

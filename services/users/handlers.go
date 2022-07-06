@@ -3,9 +3,11 @@ package users
 import (
 	"context"
 	"users/gen/pb"
+	"users/gen/sqlc"
 )
 
 func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
+	s.InsertUser(ctx, sqlc.InsertUserParams{})
 	return &pb.User{Id: in.Id}, nil
 }
 

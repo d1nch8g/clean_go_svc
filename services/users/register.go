@@ -9,7 +9,7 @@ import (
 
 type server struct {
 	pb.UnimplementedUsersServer
-	pg postgres.IPostgres
+	postgres.IPostgres
 }
 
 func Register(s grpc.ServiceRegistrar, db postgres.IPostgres) {
@@ -17,6 +17,6 @@ func Register(s grpc.ServiceRegistrar, db postgres.IPostgres) {
 		panic(`attempt to register users server with nil db`)
 	}
 	pb.RegisterUsersServer(s, &server{
-		pg: db,
+		IPostgres: db,
 	})
 }
