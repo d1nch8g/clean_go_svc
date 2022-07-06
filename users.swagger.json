@@ -185,6 +185,10 @@
           "type": "integer",
           "format": "int32",
           "title": "User age"
+        },
+        "description": {
+          "type": "string",
+          "title": "Information about user"
         }
       },
       "title": "Unified entity for user"

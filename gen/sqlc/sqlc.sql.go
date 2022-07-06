@@ -39,13 +39,15 @@ func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) (int32, 
 }
 
 const selectUsers = `-- name: SelectUsers :many
-SELECT name,
+SELECT id,
+    name,
     age,
     description
 FROM users
 `
 
 type SelectUsersRow struct {
+	ID          int32
 	Name        string
 	Age         int32
 	Description string
@@ -60,7 +62,12 @@ func (q *Queries) SelectUsers(ctx context.Context) ([]SelectUsersRow, error) {
 	var items []SelectUsersRow
 	for rows.Next() {
 		var i SelectUsersRow
-		if err := rows.Scan(&i.Name, &i.Age, &i.Description); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Age,
+			&i.Description,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

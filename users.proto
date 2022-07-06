@@ -54,4 +54,6 @@ message User {
   string name = 2;
   // User age
   int32 age = 3;
+  // Information about user
+  string description = 4;
 }

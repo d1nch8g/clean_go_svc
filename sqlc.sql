@@ -3,7 +3,8 @@ INSERT INTO users (name, age, description)
 VALUES ($1, $2, $3)
 RETURNING id;
 -- name: SelectUsers :many
-SELECT name,
+SELECT id,
+    name,
     age,
     description
 FROM users;
