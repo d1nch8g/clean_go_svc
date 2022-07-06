@@ -4,6 +4,7 @@ import (
 	"users/postgres/migr"
 
 	"users/postgres"
+	"users/services"
 
 	"github.com/caarlos0/env/v6"
 )
@@ -37,7 +38,7 @@ func main() {
 		Dir:      "migrations",
 	})
 
-	pg := postgres.New(postgres.Params{
+	db := postgres.New(postgres.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
 		Host:     cfg.PostgresHost,
@@ -45,5 +46,9 @@ func main() {
 		Db:       cfg.PostgresDb,
 	})
 
-	
+	services.Run(services.Params{
+		GrpcPort: cfg.GrpcPort,
+		HttpPort: cfg.HttpPort,
+		Postgres: db,
+	})
 }

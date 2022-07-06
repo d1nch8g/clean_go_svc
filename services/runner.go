@@ -57,7 +57,7 @@ func runHttp(httpport int, grpcport int) {
 		panic(err)
 	}
 
-	log.Printf(fmt.Sprintf("http server listening at %d", httpport))
+	log.Printf("http server listening at %d", httpport)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", httpport), mux); err != nil {
 		panic(err)
 	}
