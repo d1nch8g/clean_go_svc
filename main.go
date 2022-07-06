@@ -31,6 +31,8 @@ func init() {
 
 func main() {
 	logger := logrus.StandardLogger()
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	logger.SetLevel(logrus.DebugLevel)
 
 	migr.Migrate(migr.Params{
 		User:     cfg.PostgresUser,
@@ -39,6 +41,7 @@ func main() {
 		Port:     cfg.PostgresPort,
 		Db:       cfg.PostgresDb,
 		Dir:      "migrations",
+		Logger:   logger,
 	})
 
 	database := postgres.New(postgres.Params{

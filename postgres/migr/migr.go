@@ -17,11 +17,13 @@ type Params struct {
 	Port     int
 	Db       string
 	Dir      string
+	Logger   goose.Logger
 }
 
 var ErrMissingMigrations = errors.New(`migrations are outdated`)
 
 func Migrate(params Params) {
+	goose.SetLogger(params.Logger)
 	connectionString := `postgresql://%s:%s@%s:%d/%s?sslmode=disable`
 	connectionString = fmt.Sprintf(
 		connectionString,

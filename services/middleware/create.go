@@ -9,7 +9,6 @@ import (
 func Get(logger *logrus.Logger) grpc.ServerOption {
 	return grpc.ChainUnaryInterceptor(
 		errorsInterceptor,
-		ctxTagInterceptor(),
 		getLoggingInterceptor(logger),
 		grpc_recovery.UnaryServerInterceptor(),
 	)

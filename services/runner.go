@@ -39,7 +39,7 @@ func runGrpc(port int, s *grpc.Server) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	log.Printf("server listening at %v", lis.Addr())
+	logrus.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		panic(err)
 	}
@@ -60,7 +60,7 @@ func runHttp(httpport int, grpcport int) {
 		panic(err)
 	}
 
-	log.Printf("http server listening at %d", httpport)
+	logrus.Printf("http server listening at %d", httpport)
 	httpPort := fmt.Sprintf(":%d", httpport)
 	if err := http.ListenAndServe(httpPort, mux); err != nil {
 		panic(err)
