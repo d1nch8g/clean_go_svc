@@ -2,7 +2,7 @@ package users
 
 import (
 	"context"
-	"users/gen/pb"
+	"users/gen/go/pb"
 	"users/gen/sqlc"
 )
 

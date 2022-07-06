@@ -1,7 +1,7 @@
 package users
 
 import (
-	"users/gen/pb"
+	"users/gen/go/pb"
 	"users/postgres"
 
 	"google.golang.org/grpc"

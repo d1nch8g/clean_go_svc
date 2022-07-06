@@ -52,6 +52,7 @@ func New(params Params) IPostgres {
 	if params.Logger == nil {
 		panic(`nil logger in params for postrges`)
 	}
+	config.ConnConfig.LogLevel = pgx.LogLevelError
 	config.ConnConfig.Logger = logrusadapter.NewLogger(params.Logger)
 
 	pool, err := pgxpool.ConnectConfig(context.Background(), config)

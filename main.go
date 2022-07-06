@@ -41,7 +41,7 @@ func main() {
 		Dir:      "migrations",
 	})
 
-	db := postgres.New(postgres.Params{
+	database := postgres.New(postgres.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
 		Host:     cfg.PostgresHost,
@@ -53,7 +53,7 @@ func main() {
 	services.Run(services.Params{
 		GrpcPort: cfg.GrpcPort,
 		HttpPort: cfg.HttpPort,
-		Postgres: db,
+		Postgres: database,
 		Logger:   logger,
 	})
 }

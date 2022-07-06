@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"users/gen/pb"
+	"users/gen/go/pb"
 	"users/postgres"
 	"users/services/middleware"
 	"users/services/users"
