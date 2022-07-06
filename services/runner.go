@@ -11,6 +11,7 @@ import (
 	"users/services/users"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -19,6 +20,7 @@ type Params struct {
 	GrpcPort int
 	HttpPort int
 	Postgres postgres.IPostgres
+	Logger   *logrus.Logger
 }
 
 func Run(params Params) {

@@ -7,6 +7,7 @@ import (
 	"users/services"
 
 	"github.com/caarlos0/env/v6"
+	"github.com/sirupsen/logrus"
 )
 
 var cfg = Config{}
@@ -29,6 +30,8 @@ func init() {
 }
 
 func main() {
+	logger := logrus.New()
+
 	migr.Migrate(migr.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
@@ -44,11 +47,13 @@ func main() {
 		Host:     cfg.PostgresHost,
 		Port:     cfg.PostgresPort,
 		Db:       cfg.PostgresDb,
+		Logger:   logger,
 	})
 
 	services.Run(services.Params{
 		GrpcPort: cfg.GrpcPort,
 		HttpPort: cfg.HttpPort,
 		Postgres: db,
+		Logger:   logger,
 	})
 }
