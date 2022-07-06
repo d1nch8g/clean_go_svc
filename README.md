@@ -10,13 +10,13 @@ Service for operations with users.
 
 ## Adresses:
 
-- http local adress example after `docker-comose`:
+- http local adress:
 
 ```
 localhost:8080
 ```
 
-- пкзс local adress example after `docker-comose`:
+- grpc local adress:
 
 ```
 localhost:9080
