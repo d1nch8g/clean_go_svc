@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"users/gen/pb"
 	"users/postgres"
+	"users/services/middleware"
 	"users/services/users"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -24,7 +25,7 @@ type Params struct {
 }
 
 func Run(params Params) {
-	s := grpc.NewServer()
+	s := grpc.NewServer(middleware.Get(params.Logger))
 
 	users.Register(s, params.Postgres)
 
