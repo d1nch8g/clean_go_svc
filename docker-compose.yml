@@ -10,8 +10,8 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "${APP_GRPC_PORT}:8080"
-      - "${APP_HTTP_PORT}:9080"
+      - "${APP_GRPC_PORT}:9080"
+      - "${APP_HTTP_PORT}:8080"
     depends_on:
       - "db"
 
