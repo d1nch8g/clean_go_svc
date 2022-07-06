@@ -11,7 +11,7 @@ import (
 type Querier interface {
 	DeleteUser(ctx context.Context, id int32) error
 	InsertUser(ctx context.Context, arg InsertUserParams) (int32, error)
-	SelectUser(ctx context.Context, id int32) (SelectUserRow, error)
+	SelectUsers(ctx context.Context) ([]SelectUsersRow, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) error
 }
 

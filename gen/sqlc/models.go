@@ -7,7 +7,8 @@ package sqlc
 import ()
 
 type User struct {
-	ID   int32
-	Name string
-	Age  int32
+	ID          int32
+	Name        string
+	Description string
+	Age         int32
 }

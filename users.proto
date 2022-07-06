@@ -5,30 +5,30 @@ import "google/api/annotations.proto";
 
 
 // Svc comment
-service Users {
+service UserStorage {
   // Creates new user
   rpc Create(User) returns (User) {
     option (google.api.http) = {
-      post: "/post"
+      post: "/create"
       body: "*"
     };
   }
   // Operation to recieve new user
-  rpc Get(Id) returns (User) {
+  rpc List(Empty) returns (Users) {
     option (google.api.http) = {
-      get: "/get/{id}"
+      get: "/list"
     };
   }
   // Operation to delete user
   rpc Remove(Id) returns (Empty) {
     option (google.api.http) = {
-      delete: "/delete/{id}"
+      delete: "/remove/{id}"
     };
   }
   // Operation update information about user
   rpc Update(User) returns (User) {
     option (google.api.http) = {
-      put: "/put"
+      put: "/update"
       body: "*"
     };
   }
@@ -38,6 +38,12 @@ message Empty {}
 
 message Id {
   int32 id = 1;
+}
+
+// Multiple users
+message Users {
+  // list with repeated users
+  repeated User users = 1;
 }
 
 // Unified entity for user

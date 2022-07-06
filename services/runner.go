@@ -52,13 +52,14 @@ func runHttp(httpport int, grpcport int) {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 	grpcadress := fmt.Sprintf("localhost:%d", grpcport)
-	err := pb.RegisterUsersHandlerFromEndpoint(ctx, mux, grpcadress, opts)
+	err := pb.RegisterUserStorageHandlerFromEndpoint(ctx, mux, grpcadress, opts)
 	if err != nil {
 		panic(err)
 	}
 
 	log.Printf("http server listening at %d", httpport)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", httpport), mux); err != nil {
+	httpPort := fmt.Sprintf(":%d", httpport)
+	if err := http.ListenAndServe(httpPort, mux); err != nil {
 		panic(err)
 	}
 }

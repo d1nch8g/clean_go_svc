@@ -18,202 +18,202 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// UsersClient is the client API for Users service.
+// UserStorageClient is the client API for UserStorage service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UsersClient interface {
+type UserStorageClient interface {
 	// Creates new user
 	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	// Operation to recieve new user
-	Get(ctx context.Context, in *Id, opts ...grpc.CallOption) (*User, error)
+	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Users, error)
 	// Operation to delete user
 	Remove(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Empty, error)
 	// Operation update information about user
 	Update(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 }
 
-type usersClient struct {
+type userStorageClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUsersClient(cc grpc.ClientConnInterface) UsersClient {
-	return &usersClient{cc}
+func NewUserStorageClient(cc grpc.ClientConnInterface) UserStorageClient {
+	return &userStorageClient{cc}
 }
 
-func (c *usersClient) Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+func (c *userStorageClient) Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, "/user.v1.Users/Create", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.v1.UserStorage/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) Get(ctx context.Context, in *Id, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
-	err := c.cc.Invoke(ctx, "/user.v1.Users/Get", in, out, opts...)
+func (c *userStorageClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Users, error) {
+	out := new(Users)
+	err := c.cc.Invoke(ctx, "/user.v1.UserStorage/List", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) Remove(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Empty, error) {
+func (c *userStorageClient) Remove(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/user.v1.Users/Remove", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.v1.UserStorage/Remove", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *usersClient) Update(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+func (c *userStorageClient) Update(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, "/user.v1.Users/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.v1.UserStorage/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// UsersServer is the server API for Users service.
-// All implementations must embed UnimplementedUsersServer
+// UserStorageServer is the server API for UserStorage service.
+// All implementations must embed UnimplementedUserStorageServer
 // for forward compatibility
-type UsersServer interface {
+type UserStorageServer interface {
 	// Creates new user
 	Create(context.Context, *User) (*User, error)
 	// Operation to recieve new user
-	Get(context.Context, *Id) (*User, error)
+	List(context.Context, *Empty) (*Users, error)
 	// Operation to delete user
 	Remove(context.Context, *Id) (*Empty, error)
 	// Operation update information about user
 	Update(context.Context, *User) (*User, error)
-	mustEmbedUnimplementedUsersServer()
+	mustEmbedUnimplementedUserStorageServer()
 }
 
-// UnimplementedUsersServer must be embedded to have forward compatible implementations.
-type UnimplementedUsersServer struct {
+// UnimplementedUserStorageServer must be embedded to have forward compatible implementations.
+type UnimplementedUserStorageServer struct {
 }
 
-func (UnimplementedUsersServer) Create(context.Context, *User) (*User, error) {
+func (UnimplementedUserStorageServer) Create(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedUsersServer) Get(context.Context, *Id) (*User, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (UnimplementedUserStorageServer) List(context.Context, *Empty) (*Users, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedUsersServer) Remove(context.Context, *Id) (*Empty, error) {
+func (UnimplementedUserStorageServer) Remove(context.Context, *Id) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
-func (UnimplementedUsersServer) Update(context.Context, *User) (*User, error) {
+func (UnimplementedUserStorageServer) Update(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUsersServer) mustEmbedUnimplementedUsersServer() {}
+func (UnimplementedUserStorageServer) mustEmbedUnimplementedUserStorageServer() {}
 
-// UnsafeUsersServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UsersServer will
+// UnsafeUserStorageServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserStorageServer will
 // result in compilation errors.
-type UnsafeUsersServer interface {
-	mustEmbedUnimplementedUsersServer()
+type UnsafeUserStorageServer interface {
+	mustEmbedUnimplementedUserStorageServer()
 }
 
-func RegisterUsersServer(s grpc.ServiceRegistrar, srv UsersServer) {
-	s.RegisterService(&Users_ServiceDesc, srv)
+func RegisterUserStorageServer(s grpc.ServiceRegistrar, srv UserStorageServer) {
+	s.RegisterService(&UserStorage_ServiceDesc, srv)
 }
 
-func _Users_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserStorage_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).Create(ctx, in)
+		return srv.(UserStorageServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.Users/Create",
+		FullMethod: "/user.v1.UserStorage/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).Create(ctx, req.(*User))
+		return srv.(UserStorageServer).Create(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserStorage_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserStorageServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.UserStorage/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserStorageServer).List(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserStorage_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Id)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).Get(ctx, in)
+		return srv.(UserStorageServer).Remove(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.Users/Get",
+		FullMethod: "/user.v1.UserStorage/Remove",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).Get(ctx, req.(*Id))
+		return srv.(UserStorageServer).Remove(ctx, req.(*Id))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Users_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Id)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UsersServer).Remove(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/user.v1.Users/Remove",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).Remove(ctx, req.(*Id))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Users_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserStorage_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(User)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServer).Update(ctx, in)
+		return srv.(UserStorageServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.Users/Update",
+		FullMethod: "/user.v1.UserStorage/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServer).Update(ctx, req.(*User))
+		return srv.(UserStorageServer).Update(ctx, req.(*User))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Users_ServiceDesc is the grpc.ServiceDesc for Users service.
+// UserStorage_ServiceDesc is the grpc.ServiceDesc for UserStorage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Users_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.v1.Users",
-	HandlerType: (*UsersServer)(nil),
+var UserStorage_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "user.v1.UserStorage",
+	HandlerType: (*UserStorageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Create",
-			Handler:    _Users_Create_Handler,
+			Handler:    _UserStorage_Create_Handler,
 		},
 		{
-			MethodName: "Get",
-			Handler:    _Users_Get_Handler,
+			MethodName: "List",
+			Handler:    _UserStorage_List_Handler,
 		},
 		{
 			MethodName: "Remove",
-			Handler:    _Users_Remove_Handler,
+			Handler:    _UserStorage_Remove_Handler,
 		},
 		{
 			MethodName: "Update",
-			Handler:    _Users_Update_Handler,
+			Handler:    _UserStorage_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -7,7 +7,11 @@ import (
 )
 
 func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
-	s.InsertUser(ctx, sqlc.InsertUserParams{})
+	id, err := s.InsertUser(ctx, sqlc.InsertUserParams{
+		Name: "",
+		Age:  0,
+	})
+	
 	return &pb.User{Id: in.Id}, nil
 }
 

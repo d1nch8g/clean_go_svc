@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_Users_Create_0(ctx context.Context, marshaler runtime.Marshaler, client UsersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserStorage_Create_0(ctx context.Context, marshaler runtime.Marshaler, client UserStorageClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq User
 	var metadata runtime.ServerMetadata
 
@@ -48,7 +48,7 @@ func request_Users_Create_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
-func local_request_Users_Create_0(ctx context.Context, marshaler runtime.Marshaler, server UsersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserStorage_Create_0(ctx context.Context, marshaler runtime.Marshaler, server UserStorageServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq User
 	var metadata runtime.ServerMetadata
 
@@ -65,59 +65,25 @@ func local_request_Users_Create_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func request_Users_Get_0(ctx context.Context, marshaler runtime.Marshaler, client UsersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Id
+func request_UserStorage_List_0(ctx context.Context, marshaler runtime.Marshaler, client UserStorageClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Empty
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	msg, err := client.Get(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.List(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Users_Get_0(ctx context.Context, marshaler runtime.Marshaler, server UsersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq Id
+func local_request_UserStorage_List_0(ctx context.Context, marshaler runtime.Marshaler, server UserStorageServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Empty
 	var metadata runtime.ServerMetadata
 
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
-	}
-
-	protoReq.Id, err = runtime.Int32(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
-	}
-
-	msg, err := server.Get(ctx, &protoReq)
+	msg, err := server.List(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_Users_Remove_0(ctx context.Context, marshaler runtime.Marshaler, client UsersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserStorage_Remove_0(ctx context.Context, marshaler runtime.Marshaler, client UserStorageClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Id
 	var metadata runtime.ServerMetadata
 
@@ -143,7 +109,7 @@ func request_Users_Remove_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
-func local_request_Users_Remove_0(ctx context.Context, marshaler runtime.Marshaler, server UsersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserStorage_Remove_0(ctx context.Context, marshaler runtime.Marshaler, server UserStorageServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Id
 	var metadata runtime.ServerMetadata
 
@@ -169,7 +135,7 @@ func local_request_Users_Remove_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func request_Users_Update_0(ctx context.Context, marshaler runtime.Marshaler, client UsersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserStorage_Update_0(ctx context.Context, marshaler runtime.Marshaler, client UserStorageClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq User
 	var metadata runtime.ServerMetadata
 
@@ -186,7 +152,7 @@ func request_Users_Update_0(ctx context.Context, marshaler runtime.Marshaler, cl
 
 }
 
-func local_request_Users_Update_0(ctx context.Context, marshaler runtime.Marshaler, server UsersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserStorage_Update_0(ctx context.Context, marshaler runtime.Marshaler, server UserStorageServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq User
 	var metadata runtime.ServerMetadata
 
@@ -203,24 +169,24 @@ func local_request_Users_Update_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-// RegisterUsersHandlerServer registers the http handlers for service Users to "mux".
-// UnaryRPC     :call UsersServer directly.
+// RegisterUserStorageHandlerServer registers the http handlers for service UserStorage to "mux".
+// UnaryRPC     :call UserStorageServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUsersHandlerFromEndpoint instead.
-func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UsersServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUserStorageHandlerFromEndpoint instead.
+func RegisterUserStorageHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UserStorageServer) error {
 
-	mux.Handle("POST", pattern_Users_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserStorage_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.Users/Create", runtime.WithHTTPPathPattern("/post"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.UserStorage/Create", runtime.WithHTTPPathPattern("/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Users_Create_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserStorage_Create_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -228,22 +194,22 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Users_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Users_Get_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserStorage_List_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.Users/Get", runtime.WithHTTPPathPattern("/get/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.UserStorage/List", runtime.WithHTTPPathPattern("/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Users_Get_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserStorage_List_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -251,22 +217,22 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Users_Get_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_List_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("DELETE", pattern_Users_Remove_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_UserStorage_Remove_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.Users/Remove", runtime.WithHTTPPathPattern("/delete/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.UserStorage/Remove", runtime.WithHTTPPathPattern("/remove/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Users_Remove_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserStorage_Remove_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -274,22 +240,22 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Users_Remove_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Remove_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PUT", pattern_Users_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_UserStorage_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.Users/Update", runtime.WithHTTPPathPattern("/put"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.UserStorage/Update", runtime.WithHTTPPathPattern("/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Users_Update_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserStorage_Update_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -297,16 +263,16 @@ func RegisterUsersHandlerServer(ctx context.Context, mux *runtime.ServeMux, serv
 			return
 		}
 
-		forward_Users_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterUsersHandlerFromEndpoint is same as RegisterUsersHandler but
+// RegisterUserStorageHandlerFromEndpoint is same as RegisterUserStorageHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterUsersHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterUserStorageHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -326,99 +292,99 @@ func RegisterUsersHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux
 		}()
 	}()
 
-	return RegisterUsersHandler(ctx, mux, conn)
+	return RegisterUserStorageHandler(ctx, mux, conn)
 }
 
-// RegisterUsersHandler registers the http handlers for service Users to "mux".
+// RegisterUserStorageHandler registers the http handlers for service UserStorage to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterUsersHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterUsersHandlerClient(ctx, mux, NewUsersClient(conn))
+func RegisterUserStorageHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUserStorageHandlerClient(ctx, mux, NewUserStorageClient(conn))
 }
 
-// RegisterUsersHandlerClient registers the http handlers for service Users
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UsersClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UsersClient"
+// RegisterUserStorageHandlerClient registers the http handlers for service UserStorage
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UserStorageClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UserStorageClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "UsersClient" to call the correct interceptors.
-func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UsersClient) error {
+// "UserStorageClient" to call the correct interceptors.
+func RegisterUserStorageHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UserStorageClient) error {
 
-	mux.Handle("POST", pattern_Users_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserStorage_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.Users/Create", runtime.WithHTTPPathPattern("/post"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.UserStorage/Create", runtime.WithHTTPPathPattern("/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Users_Create_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserStorage_Create_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Users_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_Users_Get_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserStorage_List_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.Users/Get", runtime.WithHTTPPathPattern("/get/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.UserStorage/List", runtime.WithHTTPPathPattern("/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Users_Get_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserStorage_List_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Users_Get_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_List_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("DELETE", pattern_Users_Remove_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_UserStorage_Remove_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.Users/Remove", runtime.WithHTTPPathPattern("/delete/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.UserStorage/Remove", runtime.WithHTTPPathPattern("/remove/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Users_Remove_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserStorage_Remove_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Users_Remove_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Remove_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PUT", pattern_Users_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_UserStorage_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.Users/Update", runtime.WithHTTPPathPattern("/put"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.UserStorage/Update", runtime.WithHTTPPathPattern("/update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Users_Update_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserStorage_Update_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Users_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserStorage_Update_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -426,21 +392,21 @@ func RegisterUsersHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Users_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"post"}, ""))
+	pattern_UserStorage_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"create"}, ""))
 
-	pattern_Users_Get_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"get", "id"}, ""))
+	pattern_UserStorage_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"list"}, ""))
 
-	pattern_Users_Remove_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"delete", "id"}, ""))
+	pattern_UserStorage_Remove_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"remove", "id"}, ""))
 
-	pattern_Users_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"put"}, ""))
+	pattern_UserStorage_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"update"}, ""))
 )
 
 var (
-	forward_Users_Create_0 = runtime.ForwardResponseMessage
+	forward_UserStorage_Create_0 = runtime.ForwardResponseMessage
 
-	forward_Users_Get_0 = runtime.ForwardResponseMessage
+	forward_UserStorage_List_0 = runtime.ForwardResponseMessage
 
-	forward_Users_Remove_0 = runtime.ForwardResponseMessage
+	forward_UserStorage_Remove_0 = runtime.ForwardResponseMessage
 
-	forward_Users_Update_0 = runtime.ForwardResponseMessage
+	forward_UserStorage_Update_0 = runtime.ForwardResponseMessage
 )
