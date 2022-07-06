@@ -2,10 +2,13 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
-	"users/services/pb"
+	"users/gen/pb"
+	"users/postgres"
+	"users/services/users"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -14,16 +17,24 @@ import (
 
 type Params struct {
 	GrpcPort int
-	RestPort int
-	Postgres IP
+	HttpPort int
+	Postgres postgres.IPostgres
 }
 
-func runGrpc() {
-	lis, err := net.Listen("tcp", ":9080")
+func Run(params Params) {
+	s := grpc.NewServer()
+
+	users.Register(s, params.Postgres)
+
+	go runGrpc(params.GrpcPort, s)
+	runHttp(params.HttpPort, params.GrpcPort)
+}
+
+func runGrpc(port int, s *grpc.Server) {
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
 
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
@@ -31,20 +42,23 @@ func runGrpc() {
 	}
 }
 
-func runRest() {
+func runHttp(httpport int, grpcport int) {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := pb.RegisterUsersHandlerFromEndpoint(ctx, mux, "localhost:9080", opts)
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+	grpcadress := fmt.Sprintf("localhost:%d", grpcport)
+	err := pb.RegisterUsersHandlerFromEndpoint(ctx, mux, grpcadress, opts)
 	if err != nil {
 		panic(err)
 	}
 
-	log.Printf("http server listening at 8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	log.Printf(fmt.Sprintf("http server listening at %d", httpport))
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", httpport), mux); err != nil {
 		panic(err)
 	}
 }

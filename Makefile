@@ -11,6 +11,6 @@ run:
 	docker compose up --build app
 
 # GENERATE PROTO AND SQLC CODE
-generate:
+genr:
 	docker run --rm -v ${PWD}:/src -w /src rvolosatovs/protoc --proto_path=/src --go_out=. --go-grpc_out=. --grpc-gateway_out=. --grpc-gateway_opt generate_unbound_methods=true --openapiv2_out . users.proto
 	docker run --rm -v ${PWD}:/src -w /src kjconroy/sqlc generate -f sqlc.yml

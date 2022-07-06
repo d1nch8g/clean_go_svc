@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"users/gen/sqlc"
 
 	"github.com/jackc/pgx/v4"
@@ -75,7 +76,7 @@ func (p *postgres) RollBack(ctx context.Context, tx pgx.Tx) {
 	err := tx.Rollback(ctx)
 	if err != nil {
 		if !errors.Is(err, pgx.ErrTxClosed) {
-			// TODO
+			log.Printf(`error occured %e`, pgx.ErrTxClosed)
 		}
 	}
 }
