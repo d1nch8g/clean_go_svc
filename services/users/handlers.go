@@ -15,6 +15,7 @@ func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &pb.User{
 		Id:          id,
 		Name:        in.Name,
@@ -47,6 +48,7 @@ func (s *server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &pb.Empty{}, nil
 }
 
@@ -60,6 +62,7 @@ func (s *server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &pb.User{
 		Id:          in.Id,
 		Name:        in.Name,

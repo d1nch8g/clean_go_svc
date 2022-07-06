@@ -8,7 +8,9 @@ import (
 	"users/gen/sqlc"
 
 	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/log/logrusadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/sirupsen/logrus"
 )
 
 type IPostgres interface {
@@ -25,6 +27,7 @@ type Params struct {
 	Host     string
 	Port     int
 	Db       string
+	Logger   *logrus.Logger
 }
 
 type postgres struct {
@@ -43,12 +46,17 @@ func New(params Params) IPostgres {
 		params.Db,
 	))
 	if err != nil {
-		panic(fmt.Errorf(`unable to parse postgres connection string, %e`, err))
+		panic(err)
 	}
+
+	if params.Logger == nil {
+		panic(`nil logger in params for postrges`)
+	}
+	config.ConnConfig.Logger = logrusadapter.NewLogger(params.Logger)
 
 	pool, err := pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
-		panic(fmt.Errorf(`unable to connect pool, %e`, err))
+		panic(err)
 	}
 	sqlc := sqlc.New(pool)
 	pg := &postgres{
@@ -58,7 +66,7 @@ func New(params Params) IPostgres {
 	}
 
 	if err != nil {
-		panic(fmt.Errorf(`unable to set postgres constants, %e`, err))
+		panic(err)
 	}
 
 	return pg

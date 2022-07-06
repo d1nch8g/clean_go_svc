@@ -16,6 +16,7 @@ func Register(s grpc.ServiceRegistrar, db postgres.IPostgres) {
 	if db == nil {
 		panic(`attempt to register users server with nil db`)
 	}
+
 	pb.RegisterUserStorageServer(s, &server{
 		IPostgres: db,
 	})
