@@ -12,14 +12,18 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+type Params struct {
+	GrpcPort int
+	RestPort int
+	Postgres IP
+}
+
 func runGrpc() {
 	lis, err := net.Listen("tcp", ":9080")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-
-	
 
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {

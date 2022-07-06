@@ -16,6 +16,8 @@ type Config struct {
 	PostgresHost     string `env:"POSTGRES_HOST"     envDefault:"localhost"`
 	PostgresPort     int    `env:"POSTGRES_PORT"     envDefault:"5432"`
 	PostgresDb       string `env:"POSTGRES_DB"       envDefault:"db"`
+	GrpcPort         int    `env:"GRPC_PORT"         envDefault:"9080"`
+	HttpPort         int    `env:"HTTP_PORT"         envDefault:"8080"`
 }
 
 func init() {
@@ -43,5 +45,5 @@ func main() {
 		Db:       cfg.PostgresDb,
 	})
 
-		
+	
 }

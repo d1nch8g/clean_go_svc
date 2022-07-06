@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"scv/postgres/sqlc"
+	"users/gen/sqlc"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -30,9 +30,6 @@ type postgres struct {
 	*pgxpool.Pool
 	params Params
 	sqlc.Queries
-
-	orgUnitId    uint64
-	orgUnknownId uint64
 }
 
 func New(params Params) IPostgres {

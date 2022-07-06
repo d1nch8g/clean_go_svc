@@ -1,9 +1,7 @@
 package users
 
 import (
-	"users/services/pb"
-
-	"gitlab.c2g.pw/back/modelrepo/postgres"
+	"users/postgres"
 )
 
 type server struct {
@@ -14,5 +12,5 @@ type server struct {
 var serverInstance server
 
 func init() {
-	
+
 }

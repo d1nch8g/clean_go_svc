@@ -2,7 +2,6 @@ package users
 
 import (
 	"context"
-	"users/services/pb"
 )
 
 func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
