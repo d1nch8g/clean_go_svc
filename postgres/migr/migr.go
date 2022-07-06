@@ -45,7 +45,7 @@ func Migrate(params Params) {
 		}
 		time.Sleep(time.Millisecond * 500)
 		if i == 9 {
-			panic(`unable to connect to database`)
+			panic(err)
 		}
 	}
 	err = goose.Up(db, params.Dir)

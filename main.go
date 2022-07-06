@@ -30,12 +30,12 @@ func init() {
 }
 
 func main() {
-	logger := logrus.New()
+	logger := logrus.StandardLogger()
 
 	migr.Migrate(migr.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
-		Host:     cfg.PostgresUser,
+		Host:     cfg.PostgresHost,
 		Port:     cfg.PostgresPort,
 		Db:       cfg.PostgresDb,
 		Dir:      "migrations",
