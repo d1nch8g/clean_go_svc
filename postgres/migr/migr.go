@@ -50,6 +50,6 @@ func Migrate(params Params) {
 	}
 	err = goose.Up(db, params.Dir)
 	if err != nil {
-		panic(fmt.Errorf(`migrate err: %s`, err))
+		panic(err)
 	}
 }
