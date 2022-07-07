@@ -58,6 +58,8 @@ var (
 )
 
 func init() {
+	rand.Seed(time.Now().Unix())
+
 	Logger.SetFormatter(&logrus.TextFormatter{
 		ForceColors:  true,
 		DisableQuote: true,
