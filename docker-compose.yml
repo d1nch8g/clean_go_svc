@@ -9,6 +9,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
+      JSON_LOGS: ${JSON_LOGS}
     ports:
       - "${APP_GRPC_PORT}:9080"
       - "${APP_HTTP_PORT}:8080"
