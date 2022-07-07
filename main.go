@@ -10,7 +10,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var cfg = Config{}
+var (
+	cfg    = Config{}
+	logger = logrus.StandardLogger()
+)
 
 type Config struct {
 	PostgresUser     string `env:"POSTGRES_USER"     envDefault:"user"`
@@ -20,6 +23,7 @@ type Config struct {
 	PostgresDb       string `env:"POSTGRES_DB"       envDefault:"db"`
 	GrpcPort         int    `env:"GRPC_PORT"         envDefault:"9080"`
 	HttpPort         int    `env:"HTTP_PORT"         envDefault:"8080"`
+	JsonLogs         bool   `env:"JSON_LOGS"         envDefault:"true"`
 }
 
 func init() {
@@ -27,13 +31,17 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	if !cfg.JsonLogs {
+		logger.SetFormatter(&logrus.TextFormatter{
+			ForceColors:  true,
+			DisableQuote: true,
+		})
+	}
+	logger.SetLevel(logrus.DebugLevel)
 }
 
 func main() {
-	logger := logrus.StandardLogger()
-	logger.SetFormatter(&logrus.JSONFormatter{})
-	logger.SetLevel(logrus.DebugLevel)
-
 	goose.Migrate(goose.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
