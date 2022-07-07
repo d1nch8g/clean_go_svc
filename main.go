@@ -1,12 +1,12 @@
 package main
 
 import (
-	"users/postgres/migr"
-
+	"users/goose"
 	"users/postgres"
 	"users/services"
 
 	"github.com/caarlos0/env/v6"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -34,7 +34,7 @@ func main() {
 	logger.SetFormatter(&logrus.JSONFormatter{})
 	logger.SetLevel(logrus.DebugLevel)
 
-	migr.Migrate(migr.Params{
+	goose.Migrate(goose.Params{
 		User:     cfg.PostgresUser,
 		Password: cfg.PostgresPassword,
 		Host:     cfg.PostgresHost,

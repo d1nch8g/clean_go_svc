@@ -1,4 +1,4 @@
-package migr
+package goose
 
 import (
 	"database/sql"
