@@ -2,9 +2,7 @@ package postgres
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"log"
 	"users/gen/sqlc"
 
 	"github.com/jackc/pgx/v4"
@@ -71,21 +69,4 @@ func New(params Params) IPostgres {
 	}
 
 	return pg
-}
-
-func (p *postgres) WithTx(tx pgx.Tx) IPostgres {
-	dbtx := p.Queries.WithTx(tx)
-	return &postgres{
-		Queries: *dbtx,
-		Pool:    p.Pool,
-	}
-}
-
-func (p *postgres) RollBack(ctx context.Context, tx pgx.Tx) {
-	err := tx.Rollback(ctx)
-	if err != nil {
-		if !errors.Is(err, pgx.ErrTxClosed) {
-			log.Printf(`error occured %e`, pgx.ErrTxClosed)
-		}
-	}
 }

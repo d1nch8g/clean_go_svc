@@ -11,8 +11,9 @@ import (
 )
 
 var (
-	ErrUnknown  = status.Error(codes.Unknown, `unknown error`)
-	ErrNotFound = status.Error(codes.NotFound, `not found in database`)
+	ErrUnknown    = status.Error(codes.Unknown, `unknown error`)
+	ErrNotFound   = status.Error(codes.NotFound, `not found in database`)
+	ErrUniqueName = status.Error(codes.FailedPrecondition, `name exists`)
 
 	// TODO add your errors and cases checks for them  here
 )
