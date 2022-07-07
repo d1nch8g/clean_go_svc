@@ -1,4 +1,6 @@
-# Clean user service
+# <p  align="center" style="font-family:courier;font-size:180%" size=212px> Clean user service </p>
+
+![](logo.png)
 
 [![Generic badge](https://img.shields.io/badge/LICENSE-MIT-orange.svg)](LICENSE)
 [![Generic badge](https://img.shields.io/badge/DOCKER-HUB-blue.svg)](https://hub.docker.com/repository/docker/dangdancheg/discord_alerts)
@@ -44,3 +46,7 @@ APP_GRPC_PORT="9080"
 APP_HTTP_PORT="8080"
 JSON_LOGS="false"
 ```
+
+## DB schema
+
+![](schema.png)
