@@ -17,6 +17,6 @@ generate:
 
 # PUSH TO DOCKER HUB
 push:
-	docker build -t clean_svc .
-	docker image push clean_svc
-	docker image remove clean_svc
+	docker build -t dangdancheg/clean_svc:latest .
+	docker push dangdancheg/clean_svc:latest
+	docker image remove dangdancheg/clean_svc:latest
