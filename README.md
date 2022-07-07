@@ -1,6 +1,9 @@
 # <p  align="center" style="font-family:courier;font-size:180%" size=212px> Clean user service </p>
 
-![](logo.png)
+<p align="center">
+<img align="center" style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" width="238px" height="238px" src="logo.png" /> 
+</p>
+
 
 [![Generic badge](https://img.shields.io/badge/LICENSE-MIT-orange.svg)](LICENSE)
 [![Generic badge](https://img.shields.io/badge/DOCKER-HUB-blue.svg)](https://hub.docker.com/repository/docker/dangdancheg/discord_alerts)
