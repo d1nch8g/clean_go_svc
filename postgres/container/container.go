@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"users/goose"
 	"users/postgres"
 
 	_ "github.com/lib/pq"
@@ -104,5 +105,15 @@ func init() {
 		Port:     DbPort,
 		Db:       DbName,
 		Logger:   Logger,
+	})
+
+	goose.Migrate(goose.Params{
+		User:     DbUser,
+		Password: DbPass,
+		Host:     DbHost,
+		Port:     DbPort,
+		Db:       DbName,
+		Logger:   Logger,
+		Dir:      `../../migrations`,
 	})
 }
