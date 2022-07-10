@@ -1,6 +1,4 @@
-<p  align="center" style="font-family:courier;font-size:180%" size=212px> Clean go service template </p>
-
----
+# <p  align="center" style="font-family:courier;font-size:180%" size=212px> Clean go service template </p>
 
 <p align="center">
 <img align="center" style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" width="238px" height="238px" src="logo.png" /> 
