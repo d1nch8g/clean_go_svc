@@ -5,17 +5,25 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+	"users/config"
 	"users/gen/go/pb"
-	"users/postgres/container"
+	"users/postgres"
 
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	ctx        = context.Background()
-	pg         = container.Postgres
+	ctx = context.Background()
+	pg  = postgres.New(postgres.Params{
+		User:     config.PostgresUser,
+		Password: config.PostgresPassword,
+		Host:     config.PostgresHost,
+		Port:     config.PostgresPort,
+		Db:       config.PostgresDb,
+		Logger:   config.Logger,
+	})
 	testServer = server{
-		IPostgres: container.Postgres,
+		IPostgres: pg,
 	}
 )
 

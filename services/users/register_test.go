@@ -2,7 +2,6 @@ package users
 
 import (
 	"testing"
-	"users/postgres/container"
 
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
@@ -11,7 +10,7 @@ import (
 func TestRegisterSuccess(t *testing.T) {
 	assert.NotPanics(t, func() {
 		s := grpc.NewServer()
-		Register(s, container.Postgres)
+		Register(s, pg)
 	})
 }
 
