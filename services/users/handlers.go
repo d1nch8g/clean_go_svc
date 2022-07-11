@@ -62,7 +62,6 @@ func (s *server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &pb.User{
 		Id:          in.Id,
 		Name:        in.Name,

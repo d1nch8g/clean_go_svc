@@ -34,6 +34,39 @@ localhost:9080
 
 Grafana link: [grafana_logs](nan)
 
+## Compose to launch service
+
+```yaml
+version: "3.8"
+
+services:
+  app:
+    image: dangdancheg/clean_svc
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: db
+      JSON_LOGS: false
+    ports:
+      - "9080:9080"
+      - "8080:8080"
+    depends_on:
+      - "db"
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
+
 ## DB schema
 
 ![](schema.png)
