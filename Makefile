@@ -5,6 +5,10 @@ dep:
 	go get -u all
 	go mod tidy
 
+# RUN DB FOR LOCAL DEVELOPMENT
+db:
+	docker run -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_DB=db -p 5432:5432 -d postgres
+
 # RESTART SERVICE
 run:
 	docker compose down

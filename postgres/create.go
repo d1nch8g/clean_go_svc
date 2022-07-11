@@ -25,6 +25,8 @@ type Params struct {
 	Host     string
 	Port     int
 	Db       string
+	MigrDir  string
+	Migrate  bool
 	Logger   *logrus.Logger
 }
 
@@ -34,7 +36,13 @@ type postgres struct {
 	sqlc.Queries
 }
 
-func New(params Params) IPostgres {
+func New(params Params) (IPostgres, error) {
+	if params.Migrate {
+		err := Migrate(params)
+		if err != nil {
+			return nil, err
+		}
+	}
 	config, err := pgxpool.ParseConfig(fmt.Sprintf(
 		`postgresql://%s:%s@%s:%d/%s`,
 		params.User,
@@ -67,6 +75,5 @@ func New(params Params) IPostgres {
 	if err != nil {
 		panic(err)
 	}
-
-	return pg
+	return pg, nil
 }

@@ -1,24 +1,16 @@
 package main
 
 import (
+	"os"
 	"users/config"
-	"users/goose"
 	"users/postgres"
 	"users/services"
+
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	goose.Migrate(goose.Params{
-		User:     config.PostgresUser,
-		Password: config.PostgresPassword,
-		Host:     config.PostgresHost,
-		Port:     config.PostgresPort,
-		Db:       config.PostgresDb,
-		Dir:      "migrations",
-		Logger:   config.Logger,
-	})
-
-	database := postgres.New(postgres.Params{
+	database, err := postgres.New(postgres.Params{
 		User:     config.PostgresUser,
 		Password: config.PostgresPassword,
 		Host:     config.PostgresHost,
@@ -26,6 +18,10 @@ func main() {
 		Db:       config.PostgresDb,
 		Logger:   config.Logger,
 	})
+	if err != nil {
+		logrus.Panic(err)
+		os.Exit(1)
+	}
 
 	services.Run(services.Params{
 		GrpcPort: config.GrpcPort,

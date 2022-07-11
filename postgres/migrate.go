@@ -1,28 +1,14 @@
-package goose
+package postgres
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"time"
 
-	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3"
 )
 
-type Params struct {
-	User     string
-	Password string
-	Host     string
-	Port     int
-	Db       string
-	Dir      string
-	Logger   goose.Logger
-}
-
-var ErrMissingMigrations = errors.New(`migrations are outdated`)
-
-func Migrate(params Params) {
+func Migrate(params Params) error {
 	goose.SetLogger(params.Logger)
 	connectionString := `postgresql://%s:%s@%s:%d/%s?sslmode=disable`
 	connectionString = fmt.Sprintf(
@@ -41,17 +27,12 @@ func Migrate(params Params) {
 			continue
 		}
 		defer db.Close()
-		err = db.Ping()
-		if err == nil {
-			break
+		err = goose.Up(db, params.MigrDir)
+		if err != nil {
+			params.Logger.Warn(`unable to operate migrations`)
+			continue
 		}
-		time.Sleep(time.Millisecond * 500)
-		if i == 9 {
-			panic(err)
-		}
+		time.Sleep(time.Millisecond * 25)
 	}
-	err = goose.Up(db, params.Dir)
-	if err != nil {
-		panic(err)
-	}
+	return err
 }

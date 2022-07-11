@@ -14,22 +14,30 @@ import (
 
 var (
 	ctx = context.Background()
-	pg  = postgres.New(postgres.Params{
+	pg  postgres.IPostgres
+	s   server
+)
+
+func init() {
+	testpg, err := postgres.New(postgres.Params{
 		User:     config.PostgresUser,
 		Password: config.PostgresPassword,
 		Host:     config.PostgresHost,
 		Port:     config.PostgresPort,
 		Db:       config.PostgresDb,
+		MigrDir:  `../../migrations`,
 		Logger:   config.Logger,
 	})
-	testServer = server{
-		IPostgres: pg,
+	if err != nil {
+		panic(err)
 	}
-)
+	pg = testpg
+	s = server{IPostgres: pg}
+}
 
 func TestCreate(t *testing.T) {
 	randName := fmt.Sprintf("testname_%d", rand.Intn(1000000))
-	resp, err := testServer.Create(ctx, &pb.User{
+	resp, err := s.Create(ctx, &pb.User{
 		Name:        randName,
 		Age:         25,
 		Description: "test_descr",
