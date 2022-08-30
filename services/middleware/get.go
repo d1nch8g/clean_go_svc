@@ -8,9 +8,9 @@ import (
 
 func Get() grpc.ServerOption {
 	return grpc.ChainUnaryInterceptor(
-		errorsInterceptor,
 		getLoggingInterceptor(),
-		grpc_recovery.UnaryServerInterceptor(),
 		grpc_auth.UnaryServerInterceptor(auth),
+		grpc_recovery.UnaryServerInterceptor(),
+		errorsInterceptor,
 	)
 }

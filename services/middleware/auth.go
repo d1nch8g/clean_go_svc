@@ -9,13 +9,14 @@ import (
 )
 
 const (
+	authType   = "Bearer"
 	dummyToken = "12345"
 )
 
 var ErrAuthFailed = status.Errorf(codes.PermissionDenied, "buildDummyAuthFunction bad token")
 
 func auth(ctx context.Context) (context.Context, error) {
-	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	token, err := grpc_auth.AuthFromMD(ctx, authType)
 	if err != nil {
 		return nil, err
 	}
