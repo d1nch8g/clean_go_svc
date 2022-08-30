@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"users/gen/pb"
 	"users/postgres"
 	"users/services/middleware"
+	"users/services/pb"
 	"users/services/users"
 
 	"github.com/sirupsen/logrus"

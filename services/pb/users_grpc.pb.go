@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.1.0
 // - protoc             v3.18.1
-// source: users.proto
+// source: services/users.proto
 
 package pb
 
@@ -245,5 +245,5 @@ var UserStorage_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "users.proto",
+	Metadata: "services/users.proto",
 }

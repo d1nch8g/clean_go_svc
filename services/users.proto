@@ -1,7 +1,7 @@
 syntax = "proto3";
 package user.v1;
 
-option go_package = "/gen/pb";
+option go_package = "/services/pb";
 
 // Service containing operations for managing users
 service UserStorage {

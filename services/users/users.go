@@ -2,9 +2,9 @@ package users
 
 import (
 	"context"
-	"users/gen/pb"
 	"users/gen/sqlc"
 	"users/postgres"
+	"users/services/pb"
 )
 
 type Server struct {

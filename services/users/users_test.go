@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"testing"
 	"users/config"
-	"users/gen/pb"
 	"users/postgres"
+	"users/services/pb"
 
 	"github.com/stretchr/testify/assert"
 )

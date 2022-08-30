@@ -12,8 +12,8 @@ run:
 
 # GENERATE PROTO AND SQLC CODE
 gen:
-	docker run --rm -v ${CURR_DIR}:/src -w /src rvolosatovs/protoc --proto_path=/src --go_out=. --go-grpc_out=. users.proto
-	docker run --rm -v ${CURR_DIR}:/src -w /src kjconroy/sqlc generate -f sqlc.yml
+	docker run --rm -v ${CURR_DIR}:/src -w /src rvolosatovs/protoc --proto_path=/src --go_out=. --go-grpc_out=. services/users.proto
+	docker run --rm -v ${CURR_DIR}:/src -w /src kjconroy/sqlc generate -f postgres/sqlc.yml
 
 # PUSH TO DOCKER HUB
 push:
