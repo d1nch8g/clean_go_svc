@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"users/postgres"
 	"users/services/middleware"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type Params struct {
@@ -18,16 +18,15 @@ type Params struct {
 	Postgres postgres.IPostgres
 }
 
-func Run(params Params) {
+func Run(params Params) error {
 	s := grpc.NewServer(middleware.Get())
 	srv := users.Server{Pg: params.Postgres}
 	pb.RegisterUserStorageServer(s, srv)
+	reflection.Register(s)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", params.GrpcPort))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		return err
 	}
 	logrus.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		panic(err)
-	}
+	return s.Serve(lis)
 }

@@ -17,9 +17,9 @@ func main() {
 		ConnString: cfg.PostgresStr,
 		MigrDir:    cfg.Migrations,
 	})
-	check(err, `config`)
+	check(err, `postgres`)
 
-	services.Run(services.Params{
+	err = services.Run(services.Params{
 		Postgres: pg,
 		GrpcPort: cfg.GrpcPort,
 	})
@@ -28,8 +28,8 @@ func main() {
 
 func check(err error, module string) {
 	if err != nil {
-		logrus.Error(`error recieving module`, module, err)
+		logrus.Errorf(`error recieving module %s: %s`, module, err)
 		os.Exit(1)
 	}
-	logrus.Info(module, ` recieved successfully`)
+	logrus.Infof(`%s recieved successfully`, module)
 }

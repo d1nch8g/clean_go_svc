@@ -2,8 +2,7 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
-	"users/gen/sqlc"
+	"users/postgres/sqlc"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/logrusadapter"
@@ -33,7 +32,8 @@ type postgres struct {
 }
 
 func Get(params Params) (IPostgres, error) {
-	db, err := sql.Open("postgres", params.ConnString+`?sslmode=disable`)
+	goose.SetLogger(logrus.StandardLogger())
+	db, err := goose.OpenDBWithDriver(`pgx`, params.ConnString+`?sslmode=disable`)
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +42,7 @@ func Get(params Params) (IPostgres, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	config, err := pgxpool.ParseConfig(params.ConnString)
 	if err != nil {
 		return nil, err
@@ -52,6 +53,7 @@ func Get(params Params) (IPostgres, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	sqlc := sqlc.New(pool)
 	pg := &postgres{
 		Queries: *sqlc,

@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-func getLoggingInterceptor(logger *logrus.Logger) grpc.UnaryServerInterceptor {
-	logEntry := logrus.NewEntry(logger)
+func getLoggingInterceptor() grpc.UnaryServerInterceptor {
+	entry := logrus.NewEntry(logrus.StandardLogger())
 	opts := []grpc_logrus.Option{
 		grpc_logrus.WithCodes(grpc_logging.DefaultErrorToCode),
 		grpc_logrus.WithLevels(grpc_logrus.DefaultClientCodeToLevel),
@@ -19,6 +19,6 @@ func getLoggingInterceptor(logger *logrus.Logger) grpc.UnaryServerInterceptor {
 		}),
 		grpc_logrus.WithMessageProducer(grpc_logrus.DefaultMessageProducer),
 	}
-	grpc_logrus.ReplaceGrpcLogger(logEntry)
-	return grpc_logrus.UnaryServerInterceptor(logEntry, opts...)
+	grpc_logrus.ReplaceGrpcLogger(entry)
+	return grpc_logrus.UnaryServerInterceptor(entry, opts...)
 }

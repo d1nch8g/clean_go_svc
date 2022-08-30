@@ -4,8 +4,7 @@ services:
   app:
     build: .
     environment:
-      POSTGRES_CONN_STRING: postgresql://user:password@host.docker.internal:5432/db
-      JSON_LOGS: true
+      JSON_LOGS: false
     ports:
       - "9080:9080"
     depends_on:

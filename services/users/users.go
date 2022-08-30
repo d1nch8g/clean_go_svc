@@ -2,8 +2,8 @@ package users
 
 import (
 	"context"
-	"users/gen/sqlc"
 	"users/postgres"
+	"users/postgres/sqlc"
 	"users/services/pb"
 )
 
