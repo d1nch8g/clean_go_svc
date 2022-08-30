@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
-	"users/config"
-	"users/gen/go/pb"
+	"users/gen/pb"
 	"users/postgres"
 
 	"github.com/stretchr/testify/assert"
@@ -15,11 +14,11 @@ import (
 var (
 	ctx = context.Background()
 	pg  postgres.IPostgres
-	s   server
+	s   Server
 )
 
 func init() {
-	testpg, err := postgres.New(postgres.Params{
+	testpg, err := postgres.Get(postgres.Params{
 		User:     config.PostgresUser,
 		Password: config.PostgresPassword,
 		Host:     config.PostgresHost,
@@ -32,7 +31,7 @@ func init() {
 		panic(err)
 	}
 	pg = testpg
-	s = server{IPostgres: pg}
+	s = Server{IPostgres: pg}
 }
 
 func TestCreate(t *testing.T) {

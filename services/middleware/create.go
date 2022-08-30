@@ -7,10 +7,10 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Get(logger *logrus.Logger) grpc.ServerOption {
+func Get() grpc.ServerOption {
 	return grpc.ChainUnaryInterceptor(
 		errorsInterceptor,
-		getLoggingInterceptor(logger),
+		getLoggingInterceptor(logrus.New()),
 		grpc_recovery.UnaryServerInterceptor(),
 		grpc_auth.UnaryServerInterceptor(auth),
 	)

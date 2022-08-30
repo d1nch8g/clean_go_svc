@@ -4,15 +4,10 @@ services:
   app:
     build: .
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST: host.docker.internal
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: db
+      POSTGRES_CONN_STRING: postgresql://user:password@host.docker.internal:5432/db
       JSON_LOGS: true
     ports:
       - "9080:9080"
-      - "8080:8080"
     depends_on:
       - "db"
 

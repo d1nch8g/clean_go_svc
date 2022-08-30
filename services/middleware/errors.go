@@ -14,8 +14,6 @@ var (
 	ErrUnknown    = status.Error(codes.Unknown, `unknown error`)
 	ErrNotFound   = status.Error(codes.NotFound, `not found in database`)
 	ErrUniqueName = status.Error(codes.FailedPrecondition, `name exists`)
-
-	// TODO add your errors and cases checks for them  here
 )
 
 func errorsInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {

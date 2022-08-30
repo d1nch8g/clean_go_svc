@@ -25,7 +25,7 @@ type UserStorageClient interface {
 	// Creates new user
 	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	// Operation to recieve new user
-	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Users, error)
+	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (UserStorage_ListClient, error)
 	// Operation to delete user
 	Remove(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Empty, error)
 	// Operation update information about user
@@ -49,13 +49,36 @@ func (c *userStorageClient) Create(ctx context.Context, in *User, opts ...grpc.C
 	return out, nil
 }
 
-func (c *userStorageClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Users, error) {
-	out := new(Users)
-	err := c.cc.Invoke(ctx, "/user.v1.UserStorage/List", in, out, opts...)
+func (c *userStorageClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (UserStorage_ListClient, error) {
+	stream, err := c.cc.NewStream(ctx, &UserStorage_ServiceDesc.Streams[0], "/user.v1.UserStorage/List", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &userStorageListClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type UserStorage_ListClient interface {
+	Recv() (*User, error)
+	grpc.ClientStream
+}
+
+type userStorageListClient struct {
+	grpc.ClientStream
+}
+
+func (x *userStorageListClient) Recv() (*User, error) {
+	m := new(User)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (c *userStorageClient) Remove(ctx context.Context, in *Id, opts ...grpc.CallOption) (*Empty, error) {
@@ -83,7 +106,7 @@ type UserStorageServer interface {
 	// Creates new user
 	Create(context.Context, *User) (*User, error)
 	// Operation to recieve new user
-	List(context.Context, *Empty) (*Users, error)
+	List(*Empty, UserStorage_ListServer) error
 	// Operation to delete user
 	Remove(context.Context, *Id) (*Empty, error)
 	// Operation update information about user
@@ -98,8 +121,8 @@ type UnimplementedUserStorageServer struct {
 func (UnimplementedUserStorageServer) Create(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedUserStorageServer) List(context.Context, *Empty) (*Users, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+func (UnimplementedUserStorageServer) List(*Empty, UserStorage_ListServer) error {
+	return status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedUserStorageServer) Remove(context.Context, *Id) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
@@ -138,22 +161,25 @@ func _UserStorage_Create_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserStorage_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
+func _UserStorage_List_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Empty)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(UserStorageServer).List(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/user.v1.UserStorage/List",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserStorageServer).List(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(UserStorageServer).List(m, &userStorageListServer{stream})
+}
+
+type UserStorage_ListServer interface {
+	Send(*User) error
+	grpc.ServerStream
+}
+
+type userStorageListServer struct {
+	grpc.ServerStream
+}
+
+func (x *userStorageListServer) Send(m *User) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 func _UserStorage_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -204,10 +230,6 @@ var UserStorage_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserStorage_Create_Handler,
 		},
 		{
-			MethodName: "List",
-			Handler:    _UserStorage_List_Handler,
-		},
-		{
 			MethodName: "Remove",
 			Handler:    _UserStorage_Remove_Handler,
 		},
@@ -216,6 +238,12 @@ var UserStorage_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserStorage_Update_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "List",
+			Handler:       _UserStorage_List_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "users.proto",
 }

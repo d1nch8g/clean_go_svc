@@ -2,12 +2,14 @@ package postgres
 
 import (
 	"context"
-	"fmt"
+	"database/sql"
 	"users/gen/sqlc"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/logrusadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/pressly/goose/v3"
 	"github.com/sirupsen/logrus"
 )
 
@@ -20,14 +22,8 @@ type IPostgres interface {
 }
 
 type Params struct {
-	User     string
-	Password string
-	Host     string
-	Port     int
-	Db       string
-	MigrDir  string
-	Migrate  bool
-	Logger   *logrus.Logger
+	ConnString string
+	MigrDir    string
 }
 
 type postgres struct {
@@ -36,34 +32,25 @@ type postgres struct {
 	sqlc.Queries
 }
 
-func New(params Params) (IPostgres, error) {
-	if params.Migrate {
-		err := Migrate(params)
-		if err != nil {
-			return nil, err
-		}
-	}
-	config, err := pgxpool.ParseConfig(fmt.Sprintf(
-		`postgresql://%s:%s@%s:%d/%s`,
-		params.User,
-		params.Password,
-		params.Host,
-		params.Port,
-		params.Db,
-	))
+func Get(params Params) (IPostgres, error) {
+	db, err := sql.Open("postgres", params.ConnString+`?sslmode=disable`)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-
-	if params.Logger == nil {
-		panic(`nil logger in params for postrges`)
+	defer db.Close()
+	err = goose.Up(db, params.MigrDir)
+	if err != nil {
+		return nil, err
+	}
+	config, err := pgxpool.ParseConfig(params.ConnString)
+	if err != nil {
+		return nil, err
 	}
 	config.ConnConfig.LogLevel = pgx.LogLevelError
-	config.ConnConfig.Logger = logrusadapter.NewLogger(params.Logger)
-
+	config.ConnConfig.Logger = logrusadapter.NewLogger(logrus.StandardLogger())
 	pool, err := pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	sqlc := sqlc.New(pool)
 	pg := &postgres{
@@ -71,9 +58,8 @@ func New(params Params) (IPostgres, error) {
 		Pool:    pool,
 		params:  params,
 	}
-
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return pg, nil
 }

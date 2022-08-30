@@ -1,8 +1,8 @@
 -- +goose Up
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(120) NOT NULL CHECK (name <> ''),
-    description VARCHAR(1200) NOT NULL CHECK (name <> ''),
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
     age INTEGER NOT NULL
 );
 -- +goose Down

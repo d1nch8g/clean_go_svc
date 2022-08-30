@@ -10,23 +10,21 @@ import (
 )
 
 func main() {
-	database, err := postgres.New(postgres.Params{
-		User:     config.PostgresUser,
-		Password: config.PostgresPassword,
-		Host:     config.PostgresHost,
-		Port:     config.PostgresPort,
-		Db:       config.PostgresDb,
-		Logger:   config.Logger,
+	cfg, err := config.Get()
+	check(err, `config`)
+
+	pg, err := postgres.Get(postgres.Params{
+		ConnString: cfg.PostgresStr,
+		MigrDir:    cfg.Migrations,
 	})
+
+	services.Run(services.Params{})
+}
+
+func check(err error, module string) {
 	if err != nil {
-		logrus.Panic(err)
+		logrus.Error(`error recieving module`, module, err)
 		os.Exit(1)
 	}
-
-	services.Run(services.Params{
-		GrpcPort: config.GrpcPort,
-		HttpPort: config.HttpPort,
-		Postgres: database,
-		Logger:   config.Logger,
-	})
+	logrus.Info(module, ` recieved successfully`)
 }

@@ -2,12 +2,18 @@ package users
 
 import (
 	"context"
-	"users/gen/go/pb"
+	"users/gen/pb"
 	"users/gen/sqlc"
+	"users/postgres"
 )
 
-func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
-	id, err := s.InsertUser(ctx, sqlc.InsertUserParams{
+type Server struct {
+	pb.UnimplementedUserStorageServer
+	Pg postgres.IPostgres
+}
+
+func (s *Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
+	id, err := s.Pg.InsertUser(ctx, sqlc.InsertUserParams{
 		Description: in.Description,
 		Name:        in.Name,
 		Age:         in.Age,
@@ -15,7 +21,6 @@ func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &pb.User{
 		Id:          id,
 		Name:        in.Name,
@@ -24,8 +29,8 @@ func (s *server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 	}, nil
 }
 
-func (s *server) List(ctx context.Context, in *pb.Empty) (*pb.Users, error) {
-	users, err := s.SelectUsers(ctx)
+func (s *Server) List(ctx context.Context, in *pb.Empty) (*pb.Users, error) {
+	users, err := s.Pg.SelectUsers(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +48,8 @@ func (s *server) List(ctx context.Context, in *pb.Empty) (*pb.Users, error) {
 	return out, nil
 }
 
-func (s *server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
-	err := s.DeleteUser(ctx, in.Id)
+func (s *Server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
+	err := s.Pg.DeleteUser(ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +57,8 @@ func (s *server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
 	return &pb.Empty{}, nil
 }
 
-func (s *server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
-	err := s.UpdateUser(ctx, sqlc.UpdateUserParams{
+func (s *Server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
+	err := s.Pg.UpdateUser(ctx, sqlc.UpdateUserParams{
 		ID:          in.Id,
 		Name:        in.Name,
 		Age:         in.Age,
