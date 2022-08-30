@@ -12,7 +12,7 @@ type Server struct {
 	Pg postgres.IPostgres
 }
 
-func (s *Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
+func (s Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 	id, err := s.Pg.InsertUser(ctx, sqlc.InsertUserParams{
 		Description: in.Description,
 		Name:        in.Name,
@@ -29,26 +29,23 @@ func (s *Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 	}, nil
 }
 
-func (s *Server) List(ctx context.Context, in *pb.Empty) (*pb.Users, error) {
-	users, err := s.Pg.SelectUsers(ctx)
+func (s Server) List(in *pb.Empty, str pb.UserStorage_ListServer) error {
+	users, err := s.Pg.SelectUsers(str.Context())
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	out := &pb.Users{}
 	for _, user := range users {
-		out.Users = append(out.Users, &pb.User{
+		str.Send(&pb.User{
 			Id:          user.ID,
 			Name:        user.Name,
 			Age:         user.Age,
 			Description: user.Description,
 		})
 	}
-
-	return out, nil
+	return nil
 }
 
-func (s *Server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
+func (s Server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
 	err := s.Pg.DeleteUser(ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -57,7 +54,7 @@ func (s *Server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
 	return &pb.Empty{}, nil
 }
 
-func (s *Server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
+func (s Server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
 	err := s.Pg.UpdateUser(ctx, sqlc.UpdateUserParams{
 		ID:          in.Id,
 		Name:        in.Name,

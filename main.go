@@ -17,8 +17,13 @@ func main() {
 		ConnString: cfg.PostgresStr,
 		MigrDir:    cfg.Migrations,
 	})
+	check(err, `config`)
 
-	services.Run(services.Params{})
+	services.Run(services.Params{
+		Postgres: pg,
+		GrpcPort: cfg.GrpcPort,
+	})
+	check(err, `services`)
 }
 
 func check(err error, module string) {

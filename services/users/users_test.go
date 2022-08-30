@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+	"users/config"
 	"users/gen/pb"
 	"users/postgres"
 
@@ -13,25 +14,23 @@ import (
 
 var (
 	ctx = context.Background()
-	pg  postgres.IPostgres
-	s   Server
+	pg  = getPg()
+	s   = Server{Pg: pg}
 )
 
-func init() {
-	testpg, err := postgres.Get(postgres.Params{
-		User:     config.PostgresUser,
-		Password: config.PostgresPassword,
-		Host:     config.PostgresHost,
-		Port:     config.PostgresPort,
-		Db:       config.PostgresDb,
-		MigrDir:  `../../migrations`,
-		Logger:   config.Logger,
+func getPg() postgres.IPostgres {
+	cfg, err := config.Get()
+	if err != nil {
+		panic(err)
+	}
+	pg, err := postgres.Get(postgres.Params{
+		ConnString: "../../migrations",
+		MigrDir:    cfg.PostgresStr,
 	})
 	if err != nil {
 		panic(err)
 	}
-	pg = testpg
-	s = Server{IPostgres: pg}
+	return pg
 }
 
 func TestCreate(t *testing.T) {
