@@ -47,7 +47,7 @@ FROM users
 `
 
 type SelectUsersRow struct {
-	ID          int32
+	Id          int32
 	Name        string
 	Age         int32
 	Description string
@@ -63,7 +63,7 @@ func (q *Queries) SelectUsers(ctx context.Context) ([]SelectUsersRow, error) {
 	for rows.Next() {
 		var i SelectUsersRow
 		if err := rows.Scan(
-			&i.ID,
+			&i.Id,
 			&i.Name,
 			&i.Age,
 			&i.Description,
@@ -87,7 +87,7 @@ WHERE id = $1
 `
 
 type UpdateUserParams struct {
-	ID          int32
+	Id          int32
 	Name        string
 	Age         int32
 	Description string
@@ -95,7 +95,7 @@ type UpdateUserParams struct {
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
 	_, err := q.db.Exec(ctx, updateUser,
-		arg.ID,
+		arg.Id,
 		arg.Name,
 		arg.Age,
 		arg.Description,
