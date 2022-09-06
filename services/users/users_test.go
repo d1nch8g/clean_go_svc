@@ -7,9 +7,11 @@ import (
 	"testing"
 	"users/config"
 	"users/postgres"
+	"users/postgres/sqlc"
 	"users/services/pb"
 
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -24,8 +26,8 @@ func getPg() postgres.IPostgres {
 		panic(err)
 	}
 	pg, err := postgres.Get(postgres.Params{
-		ConnString: "../../migrations",
-		MigrDir:    cfg.PostgresStr,
+		ConnString: cfg.PostgresStr,
+		MigrDir:    "../../postgres/migrations",
 	})
 	if err != nil {
 		panic(err)
@@ -53,4 +55,32 @@ func TestCreate(t *testing.T) {
 	assert.True(t, found)
 }
 
-// TODO add your tests here
+type mockStream struct {
+	grpc.ServerStream
+	users []*pb.User
+}
+
+func (f *mockStream) Send(in *pb.User) error {
+	f.users = append(f.users, in)
+	return nil
+}
+
+func (f *mockStream) Context() context.Context {
+	return ctx
+}
+
+func TestList(t *testing.T) {
+	stream := &mockStream{}
+	pg.InsertUser(ctx, sqlc.InsertUserParams{
+		Name: `test name`,
+	})
+	err := s.List(&pb.Empty{}, stream)
+	assert.Nil(t, err)
+	found := false
+	for _, u := range stream.users {
+		if u.Name == `test name` {
+			found = true
+		}
+	}
+	assert.True(t, found)
+}
