@@ -11,4 +11,5 @@ type User struct {
 	Name        string
 	Description string
 	Age         int32
+	SomeID      int32
 }

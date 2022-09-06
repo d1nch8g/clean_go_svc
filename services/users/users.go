@@ -14,7 +14,7 @@ var ErrUnknown = status.Error(codes.NotFound, `unknown error`)
 
 type Server struct {
 	pb.UnimplementedUserStorageServer
-	Pg postgres.IPostgres
+	Pg *postgres.Db
 }
 
 func (s Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {

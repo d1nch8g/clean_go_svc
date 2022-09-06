@@ -1,12 +1,9 @@
 -- name: InsertUser :one
-INSERT INTO users (name, age, description)
-VALUES ($1, $2, $3)
+INSERT INTO users (name, age, description, some_id)
+VALUES ($1, $2, $3, $4)
 RETURNING id;
 -- name: SelectUsers :many
-SELECT id,
-    name,
-    age,
-    description
+SELECT *
 FROM users;
 -- name: DeleteUser :exec
 DELETE FROM users
@@ -15,5 +12,6 @@ WHERE id = $1;
 UPDATE users
 SET name = $2,
     age = $3,
-    description = $4
+    description = $4,
+    some_id = $5
 WHERE id = $1;

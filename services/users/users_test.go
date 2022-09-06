@@ -20,7 +20,7 @@ var (
 	s   = Server{Pg: pg}
 )
 
-func getPg() postgres.IPostgres {
+func getPg() *postgres.Db {
 	cfg, err := config.Get()
 	if err != nil {
 		panic(err)
