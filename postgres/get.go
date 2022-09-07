@@ -12,33 +12,25 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type IPostgres interface {
-	sqlc.Querier
-
-	WithTx(tx pgx.Tx) IPostgres
-	Begin(ctx context.Context) (pgx.Tx, error)
-	RollBack(ctx context.Context, tx pgx.Tx)
-}
-
 type Params struct {
 	ConnString string
 	MigrDir    string
 }
 
-type postgres struct {
+type Db struct {
 	*pgxpool.Pool
 	params Params
 	sqlc.Queries
 }
 
-func Get(params Params) (IPostgres, error) {
+func Get(params Params) (*Db, error) {
 	goose.SetLogger(logrus.StandardLogger())
-	db, err := goose.OpenDBWithDriver(`pgx`, params.ConnString+`?sslmode=disable`)
+	migrDb, err := goose.OpenDBWithDriver(`pgx`, params.ConnString+`?sslmode=disable`)
 	if err != nil {
 		return nil, err
 	}
-	defer db.Close()
-	err = goose.Up(db, params.MigrDir)
+	defer migrDb.Close()
+	err = goose.Up(migrDb, params.MigrDir)
 	if err != nil {
 		return nil, err
 	}
@@ -55,13 +47,9 @@ func Get(params Params) (IPostgres, error) {
 	}
 
 	sqlc := sqlc.New(pool)
-	pg := &postgres{
+	return &Db{
 		Queries: *sqlc,
 		Pool:    pool,
 		params:  params,
-	}
-	if err != nil {
-		return nil, err
-	}
-	return pg, nil
+	}, nil
 }

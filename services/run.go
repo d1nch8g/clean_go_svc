@@ -15,7 +15,7 @@ import (
 
 type Params struct {
 	GrpcPort int
-	Postgres postgres.IPostgres
+	Postgres *postgres.Db
 }
 
 func Run(params Params) error {

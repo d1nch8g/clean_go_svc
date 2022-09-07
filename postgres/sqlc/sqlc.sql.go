@@ -20,8 +20,8 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const insertUser = `-- name: InsertUser :one
-INSERT INTO users (name, age, description)
-VALUES ($1, $2, $3)
+INSERT INTO users (name, age, description, some_id)
+VALUES ($1, $2, $3, $4)
 RETURNING id
 `
 
@@ -29,44 +29,41 @@ type InsertUserParams struct {
 	Name        string
 	Age         int32
 	Description string
+	SomeID      int32
 }
 
 func (q *Queries) InsertUser(ctx context.Context, arg InsertUserParams) (int32, error) {
-	row := q.db.QueryRow(ctx, insertUser, arg.Name, arg.Age, arg.Description)
+	row := q.db.QueryRow(ctx, insertUser,
+		arg.Name,
+		arg.Age,
+		arg.Description,
+		arg.SomeID,
+	)
 	var id int32
 	err := row.Scan(&id)
 	return id, err
 }
 
 const selectUsers = `-- name: SelectUsers :many
-SELECT id,
-    name,
-    age,
-    description
+SELECT id, name, description, age, some_id
 FROM users
 `
 
-type SelectUsersRow struct {
-	ID          int32
-	Name        string
-	Age         int32
-	Description string
-}
-
-func (q *Queries) SelectUsers(ctx context.Context) ([]SelectUsersRow, error) {
+func (q *Queries) SelectUsers(ctx context.Context) ([]User, error) {
 	rows, err := q.db.Query(ctx, selectUsers)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []SelectUsersRow
+	var items []User
 	for rows.Next() {
-		var i SelectUsersRow
+		var i User
 		if err := rows.Scan(
-			&i.ID,
+			&i.Id,
 			&i.Name,
-			&i.Age,
 			&i.Description,
+			&i.Age,
+			&i.SomeID,
 		); err != nil {
 			return nil, err
 		}
@@ -82,23 +79,26 @@ const updateUser = `-- name: UpdateUser :exec
 UPDATE users
 SET name = $2,
     age = $3,
-    description = $4
+    description = $4,
+    some_id = $5
 WHERE id = $1
 `
 
 type UpdateUserParams struct {
-	ID          int32
+	Id          int32
 	Name        string
 	Age         int32
 	Description string
+	SomeID      int32
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {
 	_, err := q.db.Exec(ctx, updateUser,
-		arg.ID,
+		arg.Id,
 		arg.Name,
 		arg.Age,
 		arg.Description,
+		arg.SomeID,
 	)
 	return err
 }

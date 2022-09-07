@@ -5,11 +5,16 @@ import (
 	"users/postgres"
 	"users/postgres/sqlc"
 	"users/services/pb"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+var ErrUnknown = status.Error(codes.NotFound, `unknown error`)
 
 type Server struct {
 	pb.UnimplementedUserStorageServer
-	Pg postgres.IPostgres
+	Pg *postgres.Db
 }
 
 func (s Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
@@ -32,14 +37,14 @@ func (s Server) Create(ctx context.Context, in *pb.User) (*pb.User, error) {
 func (s Server) List(in *pb.Empty, str pb.UserStorage_ListServer) error {
 	users, err := s.Pg.SelectUsers(str.Context())
 	if err != nil {
-		return err
+		return ErrUnknown
 	}
-	for _, user := range users {
+	for _, sur := range users {
 		str.Send(&pb.User{
-			Id:          user.ID,
-			Name:        user.Name,
-			Age:         user.Age,
-			Description: user.Description,
+			Id:          sur.Id,
+			Name:        sur.Name,
+			Age:         sur.Age,
+			Description: sur.Description,
 		})
 	}
 	return nil
@@ -56,7 +61,7 @@ func (s Server) Remove(ctx context.Context, in *pb.Id) (*pb.Empty, error) {
 
 func (s Server) Update(ctx context.Context, in *pb.User) (*pb.User, error) {
 	err := s.Pg.UpdateUser(ctx, sqlc.UpdateUserParams{
-		ID:          in.Id,
+		Id:          in.Id,
 		Name:        in.Name,
 		Age:         in.Age,
 		Description: in.Description,
