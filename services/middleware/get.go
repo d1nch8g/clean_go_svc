@@ -6,11 +6,18 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Get() grpc.ServerOption {
+func GetUnary() grpc.ServerOption {
 	return grpc.ChainUnaryInterceptor(
-		getLoggingInterceptor(),
+		getUnaryLogger(),
 		grpc_auth.UnaryServerInterceptor(auth),
 		grpc_recovery.UnaryServerInterceptor(),
-		errorsInterceptor,
+	)
+}
+
+func GetStream() grpc.ServerOption {
+	return grpc.ChainStreamInterceptor(
+		getStreamLogger(),
+		grpc_auth.StreamServerInterceptor(auth),
+		grpc_recovery.StreamServerInterceptor(),
 	)
 }

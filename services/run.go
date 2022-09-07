@@ -19,7 +19,7 @@ type Params struct {
 }
 
 func Run(params Params) error {
-	s := grpc.NewServer(middleware.Get())
+	s := grpc.NewServer(middleware.GetUnary())
 	srv := users.Server{Pg: params.Postgres}
 	pb.RegisterUserStorageServer(s, srv)
 	reflection.Register(s)

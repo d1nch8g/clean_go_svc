@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func getLoggingInterceptor() grpc.UnaryServerInterceptor {
+func getUnaryLogger() grpc.UnaryServerInterceptor {
 	entry := logrus.NewEntry(logrus.StandardLogger())
 	opts := []grpc_logrus.Option{
 		grpc_logrus.WithCodes(grpc_logging.DefaultErrorToCode),
@@ -21,4 +21,18 @@ func getLoggingInterceptor() grpc.UnaryServerInterceptor {
 	}
 	grpc_logrus.ReplaceGrpcLogger(entry)
 	return grpc_logrus.UnaryServerInterceptor(entry, opts...)
+}
+
+func getStreamLogger() grpc.StreamServerInterceptor {
+	entry := logrus.NewEntry(logrus.StandardLogger())
+	opts := []grpc_logrus.Option{
+		grpc_logrus.WithCodes(grpc_logging.DefaultErrorToCode),
+		grpc_logrus.WithLevels(grpc_logrus.DefaultClientCodeToLevel),
+		grpc_logrus.WithDurationField(func(duration time.Duration) (key string, value interface{}) {
+			return "grpc.time_ns", duration.Nanoseconds()
+		}),
+		grpc_logrus.WithMessageProducer(grpc_logrus.DefaultMessageProducer),
+	}
+	grpc_logrus.ReplaceGrpcLogger(entry)
+	return grpc_logrus.StreamServerInterceptor(entry, opts...)
 }
